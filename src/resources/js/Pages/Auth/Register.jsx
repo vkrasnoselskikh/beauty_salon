@@ -1,10 +1,8 @@
 import { useEffect } from 'react';
 import GuestLayout from '@/Layouts/GuestLayout';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
+import { Box, Input, Button, Alert, Checkbox, FormLabel, FormControl, FormHelperText } from '@mui/joy'
+import { Link } from '@/Components/Link'
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -32,89 +30,83 @@ export default function Register() {
 
     return (
         <GuestLayout>
-            <Head title="Register" />
+            <Head title="Регистрация" />
 
             <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="name" value="Имя" />
 
-                    <TextInput
-                        id="name"
-                        name="name"
-                        value={data.name}
-                        className="mt-1 block w-full"
-                        autoComplete="name"
-                        isFocused={true}
-                        onChange={handleOnChange}
-                        required
-                    />
+                <Box mt={2}>
+                    <FormControl>
+                        <FormLabel>Имя</FormLabel>
+                        <Input
+                            id="name"
+                            name="name"
+                            value={data.name}
+                            onChange={handleOnChange}
+                            error={!!errors.name}
+                            required
+                        />
+                        <FormHelperText>{errors.name}</FormHelperText>
+                    </FormControl>
+                </Box>
 
-                    <InputError message={errors.name} className="mt-2" />
-                </div>
 
-                <div className="mt-4">
-                    <InputLabel htmlFor="email" value="Email" />
+                <Box mt={2}>
+                    <FormControl>
+                        <FormLabel>Email</FormLabel>
+                        <Input
+                            id="email"
+                            name="email"
+                            value={data.email}
+                            onChange={handleOnChange}
+                            error={!!errors.email}
+                            required
+                        />
+                        <FormHelperText>{errors.email}</FormHelperText>
+                    </FormControl>
+                </Box>
 
-                    <TextInput
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={data.email}
-                        className="mt-1 block w-full"
-                        autoComplete="username"
-                        onChange={handleOnChange}
-                        required
-                    />
+                <Box mt={2}>
+                    <FormControl>
+                        <FormLabel>Пароль</FormLabel>
+                        <Input
+                            id="password"
+                            type="password"
+                            name="password"
+                            value={data.password}
+                            onChange={handleOnChange}
+                            error={!!errors.password}
+                            required
+                        />
+                        <FormHelperText>{errors.password}</FormHelperText>
+                    </FormControl>
+                </Box>
 
-                    <InputError message={errors.email} className="mt-2" />
-                </div>
+                <Box mt={2}>
+                    <FormControl>
+                        <FormLabel>Повторите пароль</FormLabel>
+                        <Input
+                            id="password_confirmation"
+                            type="password"
+                            name="password_confirmation"
+                            value={data.password_confirmation}
+                            onChange={handleOnChange}
+                            error={!!errors.password_confirmation}
+                            required
+                        />
+                        <FormHelperText>{errors.password_confirmation}</FormHelperText>
+                    </FormControl>
+                </Box>
 
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Пароль" />
-
-                    <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
-                        onChange={handleOnChange}
-                        required
-                    />
-
-                    <InputError message={errors.password} className="mt-2" />
-                </div>
-
-                <div className="mt-4">
-                    <InputLabel htmlFor="password_confirmation" value="Повторите пароль" />
-
-                    <TextInput
-                        id="password_confirmation"
-                        type="password"
-                        name="password_confirmation"
-                        value={data.password_confirmation}
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
-                        onChange={handleOnChange}
-                        required
-                    />
-
-                    <InputError message={errors.password_confirmation} className="mt-2" />
-                </div>
-
-                <div className="flex items-center justify-end mt-4">
-                    <Link
-                        href={route('login')}
-                        className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                        Уже зарегистрировался?
+                <Box mt={2} display={'flex'} gap={2} alignItems={'center'}>
+                    <Link href={route('login')}>
+                        Уже зарегистровались?
                     </Link>
 
-                    <PrimaryButton className="ml-4" disabled={processing}>
+                    <Button type='submit' disabled={processing}>
                         Регистрация
-                    </PrimaryButton>
-                </div>
+                    </Button>
+
+                </Box>
             </form>
         </GuestLayout>
     );

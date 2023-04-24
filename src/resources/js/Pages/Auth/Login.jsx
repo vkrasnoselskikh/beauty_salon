@@ -1,11 +1,7 @@
 import { useEffect } from 'react';
-import Checkbox from '@/Components/Checkbox';
 import GuestLayout from '@/Layouts/GuestLayout';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
+import { Box, Input, Button, Alert, Checkbox, FormLabel, FormControl, FormHelperText } from '@mui/joy'
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -21,68 +17,59 @@ export default function Login({ status, canResetPassword }) {
     }, []);
 
     const handleOnChange = (event) => {
-        setData(event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value);
+        setData(event.target.name, event.target.value);
     };
 
     const submit = (e) => {
         e.preventDefault();
-
         post(route('login'));
     };
 
     return (
         <GuestLayout>
-            <Head title="Log in" />
+            <Head title="Авторизация" />
 
-            {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
+            {status && <Alert>{status}</Alert>}
 
             <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="email" value="Email" />
+                <Box mt={2}>
+                    <FormControl>
+                        <FormLabel>Email</FormLabel>
+                        <Input
+                            id="email"
+                            type="email"
+                            name="email"
+                            value={data.email}
+                            onChange={handleOnChange}
+                            error={!!errors.email}
+                        />
+                        <FormHelperText>{errors.email}</FormHelperText>
+                    </FormControl>
+                </Box>
 
-                    <TextInput
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={data.email}
-                        className="mt-1 block w-full"
-                        autoComplete="username"
-                        isFocused={true}
-                        onChange={handleOnChange}
-                    />
-
-                    <InputError message={errors.email} className="mt-2" />
-                </div>
-
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Пароль" />
-
-                    <TextInput
+                <Box mt={2}>
+                    <FormLabel>Пароль</FormLabel>
+                    <Input
                         id="password"
                         type="password"
                         name="password"
                         value={data.password}
-                        className="mt-1 block w-full"
-                        autoComplete="current-password"
                         onChange={handleOnChange}
+                        error={!!errors.password}
                     />
+                     <FormHelperText>{errors.password}</FormHelperText>
 
-                    <InputError message={errors.password} className="mt-2" />
-                </div>
+                </Box>
 
-                <div className="block mt-4">
-                    <label className="flex items-center">
-                        <Checkbox name="remember" value={data.remember} onChange={handleOnChange} />
-                        <span className="ml-2 text-sm text-gray-600">Запомнить меня</span>
-                    </label>
-                </div>
+                <Box mt={2}>
+                    <Checkbox name="remember" label="Запомнить меня" value={data.remember} onChange={(event)=>{setData('remember', event.target.checked.toString());}} />
+                </Box>
 
-                <div className="flex items-center justify-end mt-4">
-
-                    <PrimaryButton className="ml-4" disabled={processing}>
+                <Box mt={2} display={'flex'} justifyContent={'end'}  >
+                    <Button type='submit' disabled={processing}>
                         Войти
-                    </PrimaryButton>
-                </div>
+                    </Button>
+                </Box>
             </form>
         </GuestLayout>
     );
