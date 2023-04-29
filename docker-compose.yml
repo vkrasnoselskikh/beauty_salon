@@ -19,10 +19,9 @@ services:
     depends_on:
       - db
     working_dir: /var/www/html/src
-    entrypoint: '/usr/local/bin/php'
     volumes:
       - ./:/var/www/html/
-    command: '-d xdebug.mode=debug -d xdebug.start_with_request=yes artisan serve --host 0.0.0.0'
+    entrypoint: bash -c "php artisan migrate && php -d xdebug.mode=debug -d xdebug.start_with_request=yes artisan serve --host 0.0.0.0"
     ports:
       - "8000:8000"
     stdin_open: true
