@@ -65,15 +65,13 @@ export default function Authenticated({ auth, header, children }) {
                                 underline="none"
                                 color="neutral"
                                 fontSize="inherit"
-                                href="#some-link"
+                                href="/dashboard"
                                 aria-label="Home"
                             >
                                 <i data-feather="home" />
                             </Link>
                         
-                            <Typography fontSize="inherit" variant="soft" color="primary">
-                                Заказы
-                            </Typography>
+                            <Typography fontSize="inherit" variant="soft" color="primary">{header}</Typography>
                         </Breadcrumbs>
                     </Box>
                     <Box
@@ -89,9 +87,7 @@ export default function Authenticated({ auth, header, children }) {
                             },
                         }}
                     >
-                        <Typography level="h1" fontSize="xl4">
-                            Заказы
-                        </Typography>
+                        <Typography level="h1" fontSize="xl4">{header}</Typography>
                     </Box>
 
                     <main>{children}</main>

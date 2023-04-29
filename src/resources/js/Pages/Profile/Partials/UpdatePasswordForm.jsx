@@ -1,10 +1,5 @@
 import { useRef } from 'react';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
 import { useForm } from '@inertiajs/react';
-import { Transition } from '@headlessui/react';
 import { Box, FormControl, Typography, FormLabel, Input, FormHelperText, Button, Alert } from '@mui/joy';
 
 export default function UpdatePasswordForm({ className }) {

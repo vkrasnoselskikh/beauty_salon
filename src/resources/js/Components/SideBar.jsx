@@ -1,7 +1,6 @@
 
 import * as React from 'react';
 import Box from '@mui/joy/Box';
-import Chip from '@mui/joy/Chip';
 import List from '@mui/joy/List';
 import ListSubheader from '@mui/joy/ListSubheader';
 import ListItem from '@mui/joy/ListItem';
@@ -11,7 +10,7 @@ import ListItemButton from '@mui/joy/ListItemButton';
 import IconButton from '@mui/joy/IconButton';
 import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
-import { Link } from '@inertiajs/react';
+import { Link as InteriaLink, router } from '@inertiajs/react';
 
 export const closeSidebar = () => {
     if (typeof document !== 'undefined') {
@@ -20,7 +19,33 @@ export const closeSidebar = () => {
     }
 };
 
+export const SidebarListItem = ({ icon, title, route_name }) => {
+    const is_active = route_name && route().current(route_name)
+
+
+    return <ListItem>
+        <ListItemButton
+            component={InteriaLink}
+            href={route_name ? route(route_name) : '#'}
+            selected={is_active}
+            onClick={closeSidebar}
+            variant={is_active ? 'soft' : 'plain'}>
+            <ListItemDecorator>
+                <i data-feather={icon} />
+            </ListItemDecorator>
+            <ListItemContent>{title}</ListItemContent>
+        </ListItemButton>
+    </ListItem>
+
+}
+
+
 export const SideBar = (props) => {
+
+    function logout(e) {
+        e.preventDefault()
+        router.post('/logout')
+    }
     return (
         <React.Fragment>
             <Box
@@ -75,55 +100,32 @@ export const SideBar = (props) => {
                     }}
                 >
                     <ListSubheader role="presentation" sx={{ color: 'text.primary' }}>
-                        Dashboard
+                        Меню
                     </ListSubheader>
-                    <ListItem>
 
-                        <ListItemButton variant="soft" component={Link} href={route('dashboard')} selected={route().current('dashboard')} onClick={() => closeSidebar()}>
-                            <ListItemDecorator>
-                                <i data-feather="activity" />
-                            </ListItemDecorator>
-                            <ListItemContent>Главная</ListItemContent>
-                        </ListItemButton>
-
-                    </ListItem>
-
-
-                    <ListItem>
-                        <ListItemButton>
-                            <ListItemDecorator>
-                                <i data-feather="shopping-cart" />
-                            </ListItemDecorator>
-                            <ListItemContent>Заказы</ListItemContent>
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem>
-                        <ListItemButton onClick={() => closeSidebar()}>
-                            <ListItemDecorator>
-                                <i data-feather="user" />
-                            </ListItemDecorator>
-                            <ListItemContent>Клиенты</ListItemContent>
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem>
-                        <ListItemButton href={route('profile.edit')} onClick={() => closeSidebar()}>
-                            <ListItemDecorator>
-                                <i data-feather="settings" />
-                            </ListItemDecorator>
-                            <ListItemContent>Настройки профиля</ListItemContent>
-                        </ListItemButton>
-                    </ListItem>
+                    <SidebarListItem route_name={'main'} icon={"activity"} title={'Главная'} />
+                    <SidebarListItem route_name={'orders.index'} icon={"shopping-cart"} title={'Заказы'} />
+                    <SidebarListItem route_name={'clients.index'} icon={"user"} title={'Клиенты'} />
+                    <SidebarListItem route_name={'services.index'} icon={"briefcase"} title={'Мои услуги'} />
+                    <SidebarListItem route_name={'materials.index'} icon={"archive"} title={'Материалы'} />
+                    <SidebarListItem route_name={'profile.edit'} icon={"settings"} title={'Настройки профиля'} />
                 </List>
+
+
                 <Box sx={{ pl: 1, mt: 'auto', display: 'flex', alignItems: 'center' }}>
-                    <div>
-                        <Typography fontWeight="lg" level="body2">
-                            {props.auth?.user?.name}
-                        </Typography>
+                    <Box>
+                        <Typography fontWeight="lg" level="body2"> {props.auth?.user?.name}</Typography>
                         <Typography level="body2">{props.auth?.user?.email}</Typography>
-                    </div>
-                    <IconButton component={Link} as="button" href={route('logout')} method="post" variant="plain" sx={{ ml: 'auto' }} >
+                    </Box>
+
+
+                    <IconButton
+                        onClick={logout}
+                        variant="plain"
+                        sx={{ ml: 'auto' }}>
                         <i data-feather="log-out" />
                     </IconButton>
+
                 </Box>
             </Sheet>
         </React.Fragment>

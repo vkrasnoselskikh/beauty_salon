@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { useForm } from '@inertiajs/react';
 import { Typography, Box, FormControl, FormLabel, Input, FormHelperText, Button, ModalDialog, Modal } from '@mui/joy'
+
 export default function DeleteUserForm({ className }) {
     const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
     const passwordInput = useRef();
