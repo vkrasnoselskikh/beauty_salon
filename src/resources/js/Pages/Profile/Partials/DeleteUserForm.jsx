@@ -1,12 +1,6 @@
 import { useRef, useState } from 'react';
-import DangerButton from '@/Components/DangerButton';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import Modal from '@/Components/Modal';
-import SecondaryButton from '@/Components/SecondaryButton';
-import TextInput from '@/Components/TextInput';
 import { useForm } from '@inertiajs/react';
-
+import { Typography, Box, FormControl, FormLabel, Input, FormHelperText, Button, ModalDialog, Modal } from '@mui/joy'
 export default function DeleteUserForm({ className }) {
     const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
     const passwordInput = useRef();
@@ -44,56 +38,61 @@ export default function DeleteUserForm({ className }) {
     };
 
     return (
-        <section className={`space-y-6 ${className}`}>
+        <Box mt={2}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900">Delete Account</h2>
+                <Typography level="h4" fontWeight="700" sx={{ mb: 0.5 }}>
+                    Удаление Аккаунта
+                </Typography>
 
-                <p className="mt-1 text-sm text-gray-600">
-                    Once your account is deleted, all of its resources and data will be permanently deleted. Before
-                    deleting your account, please download any data or information that you wish to retain.
-                </p>
+                <Typography level="body1" sx={{ mb: 1 }}>
+                    После удаления вашей учетной записи все ее ресурсы и данные будут удалены навсегда. Прежде чем
+                    удалить вашу учетную запись, загрузите все данные или информацию, которые вы хотите сохранить.
+                </Typography>
             </header>
 
-            <DangerButton onClick={confirmUserDeletion}>Delete Account</DangerButton>
+            <Button onClick={confirmUserDeletion} color="danger">Удалить Аккаунт</Button>
 
-            <Modal show={confirmingUserDeletion} onClose={closeModal}>
-                <form onSubmit={deleteUser} className="p-6">
-                    <h2 className="text-lg font-medium text-gray-900">
-                        Are you sure you want to delete your account?
-                    </h2>
+            <Modal open={confirmingUserDeletion} onClose={closeModal}>
+                <ModalDialog>
+                    <FormControl onSubmit={deleteUser}>
 
-                    <p className="mt-1 text-sm text-gray-600">
-                        Once your account is deleted, all of its resources and data will be permanently deleted. Please
-                        enter your password to confirm you would like to permanently delete your account.
-                    </p>
+                        <Typography level="h4" fontWeight="700">
+                            Вы уверены, что хотите удалить свой аккаунт?
+                        </Typography>
 
-                    <div className="mt-6">
-                        <InputLabel htmlFor="password" value="Password" className="sr-only" />
+                        <Typography level="body1">
+                            После удаления вашей учетной записи все её ресурсы и данные будут удалены навсегда. Пожалуйста,
+                            введите свой пароль, чтобы подтвердить, что вы хотите окончательно удалить свою учетную запись.
+                        </Typography>
 
-                        <TextInput
-                            id="password"
-                            type="password"
-                            name="password"
-                            ref={passwordInput}
-                            value={data.password}
-                            onChange={(e) => setData('password', e.target.value)}
-                            className="mt-1 block w-3/4"
-                            isFocused
-                            placeholder="Password"
-                        />
+                        <Box>
+                            <FormControl>
+                                <FormLabel>Введите свой пароль</FormLabel>
+                                <Input
+                                    id="password"
+                                    type="password"
+                                    name="password"
+                                    ref={passwordInput}
+                                    value={data.password}
+                                    onChange={(e) => setData('password', e.target.value)}
+                                    placeholder="Пароль"
+                                />
+                                <FormHelperText>{errors.password}</FormHelperText>
+                            </FormControl>
+                        </Box>
 
-                        <InputError message={errors.password} className="mt-2" />
-                    </div>
+                        <Box mt={0.4}>
 
-                    <div className="mt-6 flex justify-end">
-                        <SecondaryButton onClick={closeModal}>Cancel</SecondaryButton>
+                            <Button onClick={closeModal} variant="outlined">Отменить</Button>
 
-                        <DangerButton className="ml-3" disabled={processing}>
-                            Delete Account
-                        </DangerButton>
-                    </div>
-                </form>
+                            <Button disabled={processing} color="danger">
+                                Удалить Аккаунт
+                            </Button>
+                        </Box>
+                    </FormControl>
+                </ModalDialog>
+
             </Modal>
-        </section>
+        </Box >
     );
 }

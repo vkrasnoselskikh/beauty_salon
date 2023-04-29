@@ -5,6 +5,7 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { useForm } from '@inertiajs/react';
 import { Transition } from '@headlessui/react';
+import { Box, FormControl, Typography, FormLabel, Input, FormHelperText, Button, Alert } from '@mui/joy';
 
 export default function UpdatePasswordForm({ className }) {
     const passwordInput = useRef();
@@ -37,76 +38,63 @@ export default function UpdatePasswordForm({ className }) {
     };
 
     return (
-        <section className={className}>
+        <Box mt={2}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900">Update Password</h2>
+                <Typography level="h4" fontWeight="700" sx={{ mt: 0.8 }}>Обновить пароль</Typography>
 
-                <p className="mt-1 text-sm text-gray-600">
-                    Ensure your account is using a long, random password to stay secure.
-                </p>
+                <Typography level="body1" sx={{ mb: 0.5 }}>
+                    Убедитесь, что ваша учетная запись использует длинный, случайный пароль, чтобы оставаться в безопасности.
+                </Typography>
             </header>
-
-            <form onSubmit={updatePassword} className="mt-6 space-y-6">
-                <div>
-                    <InputLabel htmlFor="current_password" value="Current Password" />
-
-                    <TextInput
+            <form onSubmit={updatePassword}>
+                <FormControl>
+                    <FormLabel sx={{ fontSize: 16 }}>Текущий пароль</FormLabel>
+                    <Input
                         id="current_password"
                         ref={currentPasswordInput}
                         value={data.current_password}
                         onChange={(e) => setData('current_password', e.target.value)}
                         type="password"
-                        className="mt-1 block w-full"
-                        autoComplete="current-password"
+                        error={!!errors.current_password}
                     />
 
-                    <InputError message={errors.current_password} className="mt-2" />
-                </div>
+                    <FormHelperText>{errors.current_password}</FormHelperText>
+                </FormControl>
 
-                <div>
-                    <InputLabel htmlFor="password" value="New Password" />
-
-                    <TextInput
+                <FormControl>
+                    <FormLabel sx={{ fontSize: 16 }}>Новый пароль</FormLabel>
+                    <Input
                         id="password"
                         ref={passwordInput}
                         value={data.password}
                         onChange={(e) => setData('password', e.target.value)}
                         type="password"
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
+                        error={!!errors.password}
                     />
+                    <FormHelperText>{errors.password}</FormHelperText>
+                </FormControl>
 
-                    <InputError message={errors.password} className="mt-2" />
-                </div>
-
-                <div>
-                    <InputLabel htmlFor="password_confirmation" value="Confirm Password" />
-
-                    <TextInput
+                <FormControl>
+                    <FormLabel sx={{ fontSize: 16 }}>Подтвердите пароль</FormLabel>
+                    <Input
                         id="password_confirmation"
                         value={data.password_confirmation}
                         onChange={(e) => setData('password_confirmation', e.target.value)}
                         type="password"
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
+                        error={!!errors.password_confirmation}
                     />
+                    <FormHelperText>{errors.password_confirmation}</FormHelperText>
+                </FormControl>
 
-                    <InputError message={errors.password_confirmation} className="mt-2" />
-                </div>
-
-                <div className="flex items-center gap-4">
-                    <PrimaryButton disabled={processing}>Save</PrimaryButton>
-
-                    <Transition
-                        show={recentlySuccessful}
-                        enterFrom="opacity-0"
-                        leaveTo="opacity-0"
-                        className="transition ease-in-out"
-                    >
-                        <p className="text-sm text-gray-600">Saved.</p>
-                    </Transition>
-                </div>
+                <Box sx={{ mt: 1 }}>
+                    <Button disabled={processing} variant="solid" type='submit'>Сохранить</Button>
+                    {recentlySuccessful &&
+                        <Box mt={2}>
+                            <Alert color={"success"}>Сохранено</Alert>
+                        </Box>
+                    }
+                </Box>
             </form>
-        </section>
+        </Box>
     );
 }

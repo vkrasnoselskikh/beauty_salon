@@ -12,16 +12,16 @@ export default function Welcome(props) {
             <Box display="flex" justifyContent={'flex-end'}>
                 {props.auth.user ? (
                     <Link href={route('dashboard')}>
-                        Dashboard
+                        Личный кабинет
                     </Link>
                 ) : (
                     <Box display="flex" gap={2}>
                         <Link href={route('login')}>
-                            Log in
+                            Войти
                         </Link>
 
                         <Link href={route('register')}>
-                            Register
+                            Регистрация
                         </Link>
                     </Box>
                 )}

@@ -4,6 +4,8 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { Transition } from '@headlessui/react';
+import { Typography } from '@mui/joy';
+import { Box, FormControl, FormLabel, Input, FormHelperText, Button } from '@mui/joy';
 
 export default function UpdateProfileInformation({ mustVerifyEmail, status, className }) {
     const user = usePage().props.auth.user;
@@ -22,80 +24,81 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900">Profile Information</h2>
-
-                <p className="mt-1 text-sm text-gray-600">
-                    Update your account's profile information and email address.
-                </p>
+                <Typography level="h4" fontWeight="700">Профиль пользователя</Typography>
+                <Typography level="body1">
+                    Обновить информацию профиля и адрес электронной почты вашей учетной записи.
+                </Typography>
             </header>
+            <form onSubmit={submit}>
+                <FormControl onSubmit={submit}>
+                    <Box sx={{ mt: 0.1 }}>
+                        <FormLabel sx={{ fontSize: 16 }}>Имя пользователя</FormLabel>
 
-            <form onSubmit={submit} className="mt-6 space-y-6">
-                <div>
-                    <InputLabel htmlFor="name" value="Name" />
+                        <Input
+                            id="name"
+                            //className="mt-1 block w-full"
+                            value={data.name}
+                            onChange={(e) => setData('name', e.target.value)}
+                            required
+                            autoComplete="name"
+                        />
 
-                    <TextInput
-                        id="name"
-                        className="mt-1 block w-full"
-                        value={data.name}
-                        onChange={(e) => setData('name', e.target.value)}
-                        required
-                        isFocused
-                        autoComplete="name"
-                    />
+                        <InputError className="mt-2" message={errors.name} />
+                    </Box>
 
-                    <InputError className="mt-2" message={errors.name} />
-                </div>
+                    <Box>
+                        <FormLabel sx={{ fontSize: 16 }}>Почта пользователя</FormLabel>
 
-                <div>
-                    <InputLabel htmlFor="email" value="Email" />
+                        <Input
+                            id="email"
+                            type="email"
+                            className="mt-1 block w-full"
+                            value={data.email}
+                            onChange={(e) => setData('email', e.target.value)}
+                            required
+                            autoComplete="username"
+                        />
 
-                    <TextInput
-                        id="email"
-                        type="email"
-                        className="mt-1 block w-full"
-                        value={data.email}
-                        onChange={(e) => setData('email', e.target.value)}
-                        required
-                        autoComplete="username"
-                    />
+                        <InputError className="mt-2" message={errors.email} />
+                    </Box>
 
-                    <InputError className="mt-2" message={errors.email} />
-                </div>
+                    {mustVerifyEmail && user.email_verified_at === null && (
+                        <Box>
+                            <Typography level="body1">
+                                Ваш адрес электронной почты не подтвержден.
+                                <Link
+                                    href={route('verification.send')}
+                                    method="post"
+                                    as="button"
+                                //className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                >
+                                    Нажмите здесь, чтобы отправить письмо с подтверждением еще раз.
+                                </Link>
+                            </Typography>
 
-                {mustVerifyEmail && user.email_verified_at === null && (
-                    <div>
-                        <p className="text-sm mt-2 text-gray-800">
-                            Your email address is unverified.
-                            <Link
-                                href={route('verification.send')}
-                                method="post"
-                                as="button"
-                                className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                            >
-                                Click here to re-send the verification email.
-                            </Link>
-                        </p>
+                            {status === 'verification-link-sent' && (
+                                <Box>
+                                    <Typography level="body1">
+                                        Новая ссылка для подтверждения была отправлена на ваш адрес электронной почты.
+                                    </Typography>
+                                </Box>
+                            )}
+                        </Box>
+                    )}
 
-                        {status === 'verification-link-sent' && (
-                            <div className="mt-2 font-medium text-sm text-green-600">
-                                A new verification link has been sent to your email address.
-                            </div>
-                        )}
-                    </div>
-                )}
+                    <Box sx={{ mt: 1 }}>
+                        <Button disabled={processing} variant="solid" type="submit">Сохранить</Button>
 
-                <div className="flex items-center gap-4">
-                    <PrimaryButton disabled={processing}>Save</PrimaryButton>
-
-                    <Transition
-                        show={recentlySuccessful}
-                        enterFrom="opacity-0"
-                        leaveTo="opacity-0"
-                        className="transition ease-in-out"
-                    >
-                        <p className="text-sm text-gray-600">Saved.</p>
-                    </Transition>
-                </div>
+                        <Transition
+                            show={recentlySuccessful}
+                            enterFrom="opacity-0"
+                            leaveTo="opacity-0"
+                            className="transition ease-in-out"
+                        >
+                            <Typography level="body1">Saved.</Typography>
+                        </Transition>
+                    </Box>
+                </FormControl>
             </form>
         </section>
     );
