@@ -1,7 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
 import { Box, Button } from '@mui/joy';
-import { AddClientForm } from '@/Pages/Clients/AddClientForm' 
+import { AddClientForm } from '@/Pages/Clients/Partials/AddClientForm' 
 
 
 export default function ({ auth, errors }) {

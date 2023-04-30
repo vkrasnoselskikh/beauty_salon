@@ -45,4 +45,12 @@ class User extends Authenticatable
     public function clients(){
         return $this->hasMany(Client::class, 'user_id', 'id');
     }
+
+    public function services(){
+        return $this->hasMany(Service::class, 'user_id', 'id');
+    }
+
+    public function materials(){
+        return $this->hasMany(Material::class, 'user_id', 'id');
+    }
 }

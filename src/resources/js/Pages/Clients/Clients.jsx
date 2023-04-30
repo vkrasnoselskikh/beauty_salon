@@ -4,7 +4,7 @@ import { Box, Button} from '@mui/joy';
 import { DataGrid, ruRU, useGridApiRef } from '@mui/x-data-grid';
 import { Plus } from 'react-feather';
 import { Link } from '@inertiajs/react'
-import DeleteClientDialog from '@/Pages/Clients/DeleteClientDialog'
+import DeleteClientDialog from '@/Pages/Clients/Partials/DeleteClientDialog'
 
 const columns = [
     { field: 'id', headerName: '#', width: 50 },

@@ -1,9 +1,9 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { useState, useEffect } from 'react';
 import { Head } from '@inertiajs/react';
-import { Box, IconButton } from '@mui/joy';
+import { Box, IconButton, Button } from '@mui/joy';
 import { DataGrid, ruRU } from '@mui/x-data-grid';
-import { Trash2, Edit2 } from 'react-feather';
+import { Trash2, Edit2, Plus } from 'react-feather';
+import { Link } from '@inertiajs/react'
 
 const columns = [
     { field: 'id', headerName: 'Номер заказа', width: 120 },
@@ -54,6 +54,9 @@ export default function EditOrders(props) {
         auth={props.auth}
         errors={props.errors}
         header={"Заказы"}
+        actions={[ 
+            <Button startDecorator={<Plus />} key={'add'} component={Link} href={route('orders.add')}>Добавить заказ</Button>
+        ]}
     >
         <Head title="Редактор заказов" />
 
