@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Client;
+use App\Policies\ClientPolicy;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -15,6 +17,10 @@ class AppServiceProvider extends ServiceProvider
     {
         //
     }
+
+    protected $policies = [
+        Client::class => ClientPolicy::class,
+    ];
 
     /**
      * Bootstrap any application services.

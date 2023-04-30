@@ -68,7 +68,7 @@ return new class extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->string('name', 255);
             $table->integer('quantity')->unsigned();
-            $table->string('unit of measure');
+            $table->string('unit_of_measure');
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

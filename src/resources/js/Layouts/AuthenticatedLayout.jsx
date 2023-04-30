@@ -3,21 +3,23 @@ import { Link } from '@/Components/Link';
 import { Box, Breadcrumbs, Typography, CssBaseline } from '@mui/joy'
 import { SideBar } from '@/Components/SideBar'
 
-export default function Authenticated({ auth, header, children }) {
+export default function Authenticated({ auth, errors, header, children, actions, breadcrumbs }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
     useEffect(() => {
         // Feather icon setup: https://github.com/feathericons/feather#4-replace
         // @ts-ignore
         if (typeof feather !== 'undefined') {
-          // @ts-ignore
-          feather.replace();
+            // @ts-ignore
+            feather.replace();
         }
-      }, []);
+    }, []);
+
+    !!errors && Object.keys(errors).length !== 0 && console.error(errors)
 
     return (
         <>
-            <CssBaseline/>
+            <CssBaseline />
             <Box sx={{ display: 'flex', minHeight: '100dvh' }}>
 
                 <SideBar auth={auth} />
@@ -65,12 +67,18 @@ export default function Authenticated({ auth, header, children }) {
                                 underline="none"
                                 color="neutral"
                                 fontSize="inherit"
-                                href="/dashboard"
+                                href="/main"
                                 aria-label="Home"
                             >
                                 <i data-feather="home" />
                             </Link>
-                        
+
+                            {breadcrumbs && breadcrumbs.map(e => <Link
+                                    key={e.route_name}
+                                    underline="none"
+                                    color="neutral"
+                                    fontSize="inherit"
+                                    href={route(e.route_name)}>{e.title}</Link>)}
                             <Typography fontSize="inherit" variant="soft" color="primary">{header}</Typography>
                         </Breadcrumbs>
                     </Box>
@@ -88,7 +96,14 @@ export default function Authenticated({ auth, header, children }) {
                         }}
                     >
                         <Typography level="h1" fontSize="xl4">{header}</Typography>
+
+                        {!!actions &&
+                            <Box display={'flex'} gap={1} alignItems={'center'} justifyContent={'flex-end'} children={actions} />
+                        }
+
                     </Box>
+
+                    {/* <Alert>{errors}</Alert> */}
 
                     <main>{children}</main>
 

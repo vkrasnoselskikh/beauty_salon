@@ -42,8 +42,19 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+
+
     Route::get('/clients', [ClientsController::class, 'index'])->name('clients.index');
+    Route::get('/clients/add', [ClientsController::class, 'add_index'])->name('clients.add');
+
+    Route::post('/clients/add', [ClientsController::class, 'create'])->name('clients.create');
+    Route::post('/clients/{client}', [ClientsController::class, 'update'])->name('clients.update');
+    Route::delete('/clients/{client}', [ClientsController::class, 'delete'])->name('clients.delete');
+    
+    
     Route::get('/services', [ServicesController::class, 'index'])->name('services.index');
+
+
     Route::get('/materials', [MaterialsController::class, 'index'])->name('materials.index');
 
 });

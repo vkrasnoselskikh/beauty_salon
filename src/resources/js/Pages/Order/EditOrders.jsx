@@ -2,7 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { useState, useEffect } from 'react';
 import { Head } from '@inertiajs/react';
 import { Box, IconButton } from '@mui/joy';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, ruRU } from '@mui/x-data-grid';
 import { Trash2, Edit2 } from 'react-feather';
 
 const columns = [
@@ -58,7 +58,7 @@ export default function EditOrders(props) {
         <Head title="Редактор заказов" />
 
         <Box>
-            <DataGrid columns={columns} rows={[
+            <DataGrid columns={columns} localeText={ruRU.components.MuiDataGrid.defaultProps.localeText} rows={[
                 {id: 1, client: 'Test-1',  services: "Стрижка, Укладка", status: "Не выполнен"}
             ]}/>
         </Box>

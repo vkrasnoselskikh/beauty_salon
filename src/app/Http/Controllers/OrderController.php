@@ -13,3 +13,4 @@ class OrderController extends Controller
         return Inertia::render('Order/EditOrders', []);
     }
 }
+ 
