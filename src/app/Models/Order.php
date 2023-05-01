@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Order extends Model
 {
@@ -15,6 +16,12 @@ class Order extends Model
         'user_id',
         'client_id',
         'status_id',
+        'date',
         'description'
     ];
+
+    public function services(): HasManyThrough
+    {
+        return $this->hasManyThrough(Service::class, ServiceToOrder::class);
+    }
 }

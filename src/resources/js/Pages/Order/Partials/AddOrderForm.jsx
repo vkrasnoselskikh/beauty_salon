@@ -1,15 +1,18 @@
-import { useForm } from '@inertiajs/react';
+import { useForm, usePage } from '@inertiajs/react';
 import { Button, Box, FormControl, FormLabel, FormHelperText,  Input } from '@mui/joy';
 
 
-export function AddOrderForm({clients, materials, services, statuses}) {
+export function AddOrderForm() {
+    const {clients, services, statuses} = usePage().props
 
-    console.log({clients, materials, services, statuses})
+    console.log({clients, services, statuses})
     
     const { data, setData, post, processing, errors, reset } = useForm({
         client_id: "",
         services_ids: "",
         description: "",
+        date: "",
+        status: ""
     });
 
     const handleOnChange = (event) => {

@@ -16,13 +16,12 @@ return new class extends Migration
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users');
-
             $table->string('first_name',255);
             $table->string('last_name', 255);
-            $table->string('phone', 25);
-            $table->string('email', 255);
+            $table->string('phone', 25)->nullable();
+            $table->string('email', 255)->nullable();
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
 
         Schema::create('orders_statuses', function (Blueprint $table) {
@@ -36,7 +35,8 @@ return new class extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->bigInteger('client_id')->unsigned();
             $table->bigInteger('status_id')->unsigned();
-            $table->text('description');
+            $table->dateTime('date');
+            $table->text('description')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
@@ -48,10 +48,9 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('user_id')->unsigned();
             $table->string('name', 255);
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->float('price');
             $table->timestamps();
-
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
 
@@ -69,6 +68,7 @@ return new class extends Migration
             $table->string('name', 255);
             $table->integer('quantity')->unsigned();
             $table->string('unit_of_measure');
+            $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
@@ -76,6 +76,7 @@ return new class extends Migration
         Schema::create('material_to_services', function (Blueprint $table) {
             $table->bigInteger('material_id')->unsigned();
             $table->bigInteger('service_id')->unsigned();
+            $table->integer('quantity')->unsigned()->default(0);
 
             $table->foreign('material_id')->references('id')->on('materials')->onDelete('cascade');
             $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade');

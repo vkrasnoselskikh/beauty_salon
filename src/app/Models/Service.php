@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Service extends Model
 {
@@ -17,4 +18,9 @@ class Service extends Model
         'description',
         'price'
     ];
+
+    public function materials(): HasManyThrough
+    {
+        return $this->hasManyThrough(Material::class, MaterialToService::class);
+    }
 }

@@ -4,7 +4,7 @@ import { Box, Button } from '@mui/joy';
 import { AddOrderForm } from '@/Pages/Order/Partials/AddOrderForm' 
 
 
-export default function ({ auth, errors, clients, services, statuses }) {
+export default function ({ auth, errors }) {
 
     return <AuthenticatedLayout
         auth={auth}
@@ -20,7 +20,7 @@ export default function ({ auth, errors, clients, services, statuses }) {
         <Head title="Добавить заказ" />
 
         <Box>
-            <AddOrderForm {...{clients, services, statuses}}/>
+            <AddOrderForm/>
         </Box>
     </AuthenticatedLayout>
 }
