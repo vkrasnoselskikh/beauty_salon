@@ -4,63 +4,8 @@ import {Edit2, Trash2, Phone} from "react-feather";
 import {usePage} from '@inertiajs/react'
 import DeleteOrderDialog from "./DeleteOrderDialog";
 
-const columns = [
-    {field: 'id', headerName: '#', width: 40},
-    {
-        field: 'client_id',
-        headerName: 'Клиент',
-        width: 250,
-        editable: false,
-        renderCell: (params) => <ClientRender client_id={params.value}/>
-    },
 
-    {
-        field: 'services',
-        headerName: 'Услуги',
-        width: 300,
-        editable: true,
 
-        renderEditCell: (params) => {
-            return <Services services_ids={params.value.map(e=>e.id)}/>
-        },
-        renderCell: (params) => {
-            console.log(params)
-            return params.value.map(e => e.name).join(', ')
-        }
-
-    },
-
-    {
-        field: 'date',
-        headerName: 'Дата и время заказа',
-        width: 200,
-        sortable: true,
-        editable: false,
-    },
-
-    {
-        field: 'status_id',
-        headerName: 'Статус заказа',
-        width: 150,
-        editable: true,
-    },
-
-    {
-        field: 'description',
-        headerName: 'Комментарий',
-        width: 200,
-        editable: true,
-    },
-
-    {
-        field: 'actions',
-        type: 'actions',
-        width: 100,
-        getActions: (params) => [
-            <DeleteOrderDialog order_id={params.id}/>
-        ],
-    },
-]
 
 function ClientRender({client_id}) {
     const {clients} = usePage().props;
@@ -82,25 +27,77 @@ function ClientRender({client_id}) {
     </>
 }
 
-export default function Services({services_ids}) {
-    const {services} = usePage().props;
-    return (
-        <Autocomplete
-            multiple
-            fullWidth
-            id="tags-default"
-            placeholder="Услуги"
-            options={services}
-            getOptionLabel={(option) => option.name}
-        />
-    );
-}
 
 export function EditOrderTable() {
-    const {orders} = usePage().props;
+    const {orders, statuses} = usePage().props;
 
+    const columns = [
+        {field: 'id', headerName: '#', width: 40},
+        {
+            field: 'client_id',
+            headerName: 'Клиент',
+            width: 250,
+            editable: false,
+            renderCell: (params) => <ClientRender client_id={params.value}/>
+        },
 
-    console.log(orders)
+        {
+            field: 'services',
+            headerName: 'Услуги',
+            width: 300,
+            editable: false,
+            renderCell: (params) => {
+                return params.value.map(e => e.name).join(', ')
+            }
+
+        },
+
+        {
+            field: 'price',
+            headerName: 'Цена',
+            valueGetter: (params) => {
+                return params.row.services.map(e => e.price).reduce((a, b) => a + b, 0);
+            }
+        },
+
+        {
+            field: 'date',
+            headerName: 'Дата и время заказа',
+            type: 'dateTime',
+            width: 200,
+            sortable: true,
+            editable: true,
+            valueGetter: ({value}) => value && new Date(value),
+
+        },
+
+        {
+            field: 'status_id',
+            headerName: 'Статус заказа',
+            type: 'singleSelect',
+            width: 150,
+            editable: true,
+            valueOptions: statuses,
+            getOptionValue: (value) => value.id,
+            getOptionLabel: (value) => value.name,
+        },
+
+        {
+            field: 'description',
+            headerName: 'Комментарий',
+            width: 200,
+            editable: true,
+        },
+
+        {
+            field: 'actions',
+            type: 'actions',
+            width: 100,
+            getActions: (params) => [
+                <DeleteOrderDialog order_id={params.id}/>
+            ],
+        },
+    ]
 
     return <DataGrid
         columns={columns}
