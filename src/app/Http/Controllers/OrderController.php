@@ -13,7 +13,13 @@ class OrderController extends Controller
 {
     public function index(Request $request): Response
     {
-        return Inertia::render('Order/EditOrders', []);
+        $user = $request->user();
+        return Inertia::render('Order/EditOrders', [
+            'clients'=> $user->clients,
+            'services'=>$user->services,
+            'statuses'=>  OrderStatus::all(),
+            'orders'=> Order::with('services')->get()
+        ]);
     }
 
     public function add_index(Request $request): Response
@@ -21,7 +27,7 @@ class OrderController extends Controller
         $user = $request->user();
 
         return Inertia::render('Order/AddOrder', [
-            'clients'=> $user->clients, 
+            'clients'=> $user->clients,
             'services'=>$user->services,
             'statuses'=>  OrderStatus::all()
         ]);
@@ -36,12 +42,11 @@ class OrderController extends Controller
             'service_id' => 'required|exists:service,id',
             'description'=> 'nullable'
         ]);
-        
+
         $order = new Order();
 
         $order->user_id = $request->user()->id;
-        
+
         return to_route('orders.edit', $order->id);
     }
 }
- 

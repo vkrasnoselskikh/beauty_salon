@@ -2,3 +2,4 @@
 .env
 src/.env
 src/vendor
+.DS_Store

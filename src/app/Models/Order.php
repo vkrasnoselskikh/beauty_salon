@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Order extends Model
 {
@@ -20,8 +20,8 @@ class Order extends Model
         'description'
     ];
 
-    public function services(): HasManyThrough
+    public function services(): BelongsToMany
     {
-        return $this->hasManyThrough(Service::class, ServiceToOrder::class);
+        return $this->belongsToMany(Service::class, 'services_to_order');
     }
 }

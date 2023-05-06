@@ -18,7 +18,7 @@ class ClientFactory extends Factory
     {
         return [
             'user_id' => 1,
-            'first_name' => fake()->firstName(),
+            'first_name' => fake()->firstNameFemale(),
             'last_name' => fake()->lastName(),
             'phone' => fake()->phoneNumber(),
             'email' => fake()->email()

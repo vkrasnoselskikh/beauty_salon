@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Service extends Model
 {
@@ -19,8 +19,8 @@ class Service extends Model
         'price'
     ];
 
-    public function materials(): HasManyThrough
+    public function services(): BelongsToMany
     {
-        return $this->hasManyThrough(Material::class, MaterialToService::class);
+        return $this->belongsToMany(Order::class, 'services_to_order');
     }
 }

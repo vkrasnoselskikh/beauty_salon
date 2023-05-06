@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import Box from '@mui/joy/Box';
 import List from '@mui/joy/List';
@@ -10,7 +9,8 @@ import ListItemButton from '@mui/joy/ListItemButton';
 import IconButton from '@mui/joy/IconButton';
 import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
-import { Link as InteriaLink, router } from '@inertiajs/react';
+import {Link as InteriaLink, router} from '@inertiajs/react';
+import {Activity, ShoppingCart, User, Briefcase, Archive, Settings, LogOut} from "react-feather";
 
 export const closeSidebar = () => {
     if (typeof document !== 'undefined') {
@@ -19,7 +19,27 @@ export const closeSidebar = () => {
     }
 };
 
-export const SidebarListItem = ({ icon, title, route_name }) => {
+export const openSidebar = () => {
+    if (typeof document !== 'undefined') {
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.setProperty('--SideNavigation-slideIn', '1');
+    }
+};
+
+export const toggleSidebar = () => {
+    if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+        const slideIn = window
+            .getComputedStyle(document.documentElement)
+            .getPropertyValue('--SideNavigation-slideIn');
+        if (slideIn) {
+            closeSidebar();
+        } else {
+            openSidebar();
+        }
+    }
+};
+
+export const SidebarListItem = ({icon, title, route_name}) => {
     const is_active = route_name && route().current(route_name)
 
 
@@ -31,7 +51,7 @@ export const SidebarListItem = ({ icon, title, route_name }) => {
             onClick={closeSidebar}
             variant={is_active ? 'soft' : 'plain'}>
             <ListItemDecorator>
-                <i data-feather={icon} />
+                {icon}
             </ListItemDecorator>
             <ListItemContent>{title}</ListItemContent>
         </ListItemButton>
@@ -46,6 +66,7 @@ export const SideBar = (props) => {
         e.preventDefault()
         router.post('/logout')
     }
+
     return (
         <React.Fragment>
             <Box
@@ -99,20 +120,20 @@ export const SideBar = (props) => {
                         '--List-gap': '4px',
                     }}
                 >
-                    <ListSubheader role="presentation" sx={{ color: 'text.primary' }}>
+                    <ListSubheader role="presentation" sx={{color: 'text.primary'}}>
                         Меню
                     </ListSubheader>
 
-                    <SidebarListItem route_name={'main'} icon={"activity"} title={'Главная'} />
-                    <SidebarListItem route_name={'orders.index'} icon={"shopping-cart"} title={'Заказы'} />
-                    <SidebarListItem route_name={'clients.index'} icon={"user"} title={'Клиенты'} />
-                    <SidebarListItem route_name={'services.index'} icon={"briefcase"} title={'Мои услуги'} />
-                    <SidebarListItem route_name={'materials.index'} icon={"archive"} title={'Материалы'} />
-                    <SidebarListItem route_name={'profile.edit'} icon={"settings"} title={'Настройки профиля'} />
+                    <SidebarListItem route_name={'main'} icon={<Activity/>} title={'Главная'}/>
+                    <SidebarListItem route_name={'orders.index'} icon={<ShoppingCart/>} title={'Заказы'}/>
+                    <SidebarListItem route_name={'clients.index'} icon={<User/>} title={'Клиенты'}/>
+                    <SidebarListItem route_name={'services.index'} icon={<Briefcase/>} title={'Мои услуги'}/>
+                    <SidebarListItem route_name={'materials.index'} icon={<Archive/>} title={'Материалы'}/>
+                    <SidebarListItem route_name={'profile.edit'} icon={<Settings/>} title={'Настройки профиля'}/>
                 </List>
 
 
-                <Box sx={{ pl: 1, mt: 'auto', display: 'flex', alignItems: 'center' }}>
+                <Box sx={{pl: 1, mt: 'auto', display: 'flex', alignItems: 'center'}}>
                     <Box>
                         <Typography fontWeight="lg" level="body2"> {props.auth?.user?.name}</Typography>
                         <Typography level="body2">{props.auth?.user?.email}</Typography>
@@ -122,8 +143,8 @@ export const SideBar = (props) => {
                     <IconButton
                         onClick={logout}
                         variant="plain"
-                        sx={{ ml: 'auto' }}>
-                        <i data-feather="log-out" />
+                        sx={{ml: 'auto'}}>
+                        <LogOut/>
                     </IconButton>
 
                 </Box>

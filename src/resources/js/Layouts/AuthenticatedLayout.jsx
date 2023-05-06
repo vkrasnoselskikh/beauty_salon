@@ -2,20 +2,15 @@ import { useState, useEffect } from 'react';
 import { Link } from '@/Components/Link';
 import { Box, Breadcrumbs, Typography, CssBaseline } from '@mui/joy'
 import { SideBar } from '@/Components/SideBar'
+import { Home, ChevronRight, Menu } from "react-feather";
+import IconButton from "@mui/joy/IconButton";
+import {toggleSidebar} from "../Components/SideBar";
+
 
 export default function Authenticated({ auth, errors, header, children, actions, breadcrumbs }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
-    useEffect(() => {
-        // Feather icon setup: https://github.com/feathericons/feather#4-replace
-        // @ts-ignore
-        if (typeof feather !== 'undefined') {
-            // @ts-ignore
-            feather.replace();
-        }
-    }, []);
-
-    !!errors && Object.keys(errors).length !== 0 && console.error(errors)
+    // !!errors && Object.keys(errors).length !== 0 && console.error(errors)
 
     return (
         <>
@@ -50,11 +45,17 @@ export default function Authenticated({ auth, errors, header, children, actions,
                         gap: 1,
                     })}
                 >
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', mt:1 }} gap={2}>
+                        <IconButton
+                            variant="outlined"
+                            onClick={(e)=> {toggleSidebar()}}
+                            sx={{ display: {md: 'block', lg:'none'}}}>
+                            <Menu/>
+                        </IconButton>
                         <Breadcrumbs
                             size="sm"
                             aria-label="breadcrumbs"
-                            separator={<i data-feather="chevron-right" />}
+                            separator={<ChevronRight/>}
                             sx={{
                                 '--Breadcrumbs-gap': '1rem',
                                 '--Icon-fontSize': '16px',
@@ -70,7 +71,7 @@ export default function Authenticated({ auth, errors, header, children, actions,
                                 href="/main"
                                 aria-label="Home"
                             >
-                                <i data-feather="home" />
+                                <Home/>
                             </Link>
 
                             {breadcrumbs && breadcrumbs.map(e => <Link
