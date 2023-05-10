@@ -11,6 +11,9 @@ class MaterialsController extends Controller
 {
     public function index(Request $request): Response
     {
-        return Inertia::render('Materials/Materials', []);
+        $user = $request->user();
+        return Inertia::render('Materials/Materials', [
+            'services' => $user->services,
+        ]);
     }
 }

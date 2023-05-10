@@ -19,8 +19,10 @@ class Service extends Model
         'price'
     ];
 
-    public function services(): BelongsToMany
+    public function materials(): BelongsToMany
     {
-        return $this->belongsToMany(Order::class, 'services_to_order');
+        return $this->belongsToMany(Material::class, 'material_to_services');
     }
+
+
 }

@@ -119,9 +119,7 @@ export function AddOrderForm() {
                 <Box>
                     <Button type={'submit'} disabled={processing}>Добавить заказ</Button>
                 </Box>
-
             </Stack>
-
         </form>
     </>
 }

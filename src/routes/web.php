@@ -56,10 +56,12 @@ Route::middleware('auth')->group(function () {
 
 
     Route::get('/services', [ServicesController::class, 'index'])->name('services.index');
-
+    Route::get('/services/add', [ServicesController::class, 'add_index'])->name('services.add');
+    Route::post('/services/add', [ServicesController::class, 'create'])->name('services.create');
+    Route::post('/services/{client}', [ServicesController::class, 'update'])->name('services.update');
+    Route::delete('/services/{client}', [ServicesController::class, 'delete'])->name('services.delete');
 
     Route::get('/materials', [MaterialsController::class, 'index'])->name('materials.index');
-
 });
 
 

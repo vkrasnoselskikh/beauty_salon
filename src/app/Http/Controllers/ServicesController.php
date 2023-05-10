@@ -11,6 +11,13 @@ class ServicesController extends Controller
 {
     public function index(Request $request): Response
     {
-        return Inertia::render('Services/Services', []);
+        $user = $request->user();
+        return Inertia::render('Services/Services', ['services' => $user->services]);
+    }
+
+    public function add_index(Request $request): Response
+    {
+        $user = $request->user();
+        return Inertia::render('Services/AddService', ['materials' => $user->materials]);
     }
 }
