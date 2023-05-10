@@ -35,7 +35,7 @@ return new class extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->bigInteger('client_id')->unsigned();
             $table->bigInteger('status_id')->unsigned();
-            $table->dateTime('date');
+            $table->dateTime('order_date');
             $table->text('description')->nullable();
             $table->timestamps();
 

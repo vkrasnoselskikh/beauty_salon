@@ -15,7 +15,7 @@ export default function DeleteOrderDialog({order_id }) {
     const [open, setOpen] = React.useState(false);
 
     const delete_order = () => {
-        router.delete(route('order.delete', order_id), {
+        router.delete(route('orders.delete', order_id), {
             onSuccess: ()=> setOpen(false)
         })
     }

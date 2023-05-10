@@ -1,32 +1,9 @@
+import {useCallback} from 'react'
 import {DataGrid, ruRU} from '@mui/x-data-grid';
-import {Box, IconButton, Button, Avatar, Typography, Autocomplete} from '@mui/joy';
-import {Edit2, Trash2, Phone} from "react-feather";
 import {usePage} from '@inertiajs/react'
 import DeleteOrderDialog from "./DeleteOrderDialog";
-
-
-
-
-function ClientRender({client_id}) {
-    const {clients} = usePage().props;
-    const client = clients.find(e => e.id === client_id)
-    return <>
-        <Box sx={{display: 'flex', gap: 2, alignItems: 'center'}}>
-            <Avatar size="sm">{client.first_name.charAt(0)}{client.last_name.charAt(0)}</Avatar>
-            <div>
-                <Typography
-                    fontWeight="lg"
-                    level="body3"
-                    textColor="text.primary"
-                >
-                    {client.first_name} {client.last_name}
-                </Typography>
-                <Typography level="body3">Телефон: {client.phone}</Typography>
-            </div>
-        </Box>
-    </>
-}
-
+import {ClientCard} from "./ClientCard";
+import {router} from '@inertiajs/react'
 
 export function EditOrderTable() {
     const {orders, statuses} = usePage().props;
@@ -38,7 +15,7 @@ export function EditOrderTable() {
             headerName: 'Клиент',
             width: 250,
             editable: false,
-            renderCell: (params) => <ClientRender client_id={params.value}/>
+            renderCell: (params) => <ClientCard client_id={params.value}/>
         },
 
         {
@@ -61,14 +38,13 @@ export function EditOrderTable() {
         },
 
         {
-            field: 'date',
+            field: 'order_date',
             headerName: 'Дата и время заказа',
             type: 'dateTime',
             width: 200,
             sortable: true,
             editable: true,
             valueGetter: ({value}) => value && new Date(value),
-
         },
 
         {
@@ -99,12 +75,29 @@ export function EditOrderTable() {
         },
     ]
 
+    const processRowUpdate = useCallback(
+        async (newRow) => {
+            // Make the HTTP request to save in the backend
+            router.visit(route('orders.update', newRow.id), {
+                method: 'post',
+                data: newRow,
+                preserveState: true,
+                preserveScroll: true,
+                only: ['orders']
+            })
+            return newRow;
+        },
+        [],
+    );
+
     return <DataGrid
         columns={columns}
         localeText={ruRU.components.MuiDataGrid.defaultProps.localeText}
+        processRowUpdate={processRowUpdate}
+        onProcessRowUpdateError={(error) => console.error(error)}
         initialState={{
             sorting: {
-                sortModel: [{field: 'date', sort: 'asc'}],
+                sortModel: [{field: 'order_date', sort: 'asc'}],
             },
         }}
         rows={orders}

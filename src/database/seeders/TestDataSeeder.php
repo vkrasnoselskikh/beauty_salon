@@ -139,7 +139,7 @@ class TestDataSeeder extends Seeder
                 'user_id' => $user_id,
                 'client_id' => Client::all()->random()->id,
                 'status_id' => OrderStatus::all()->random()->id,
-                'date' => Carbon::today()->addDays(rand(1, 365)),
+                'order_date' => Carbon::today()->addDays(rand(1, 365)),
                 'description' => 'Test'
             ]);
         }
