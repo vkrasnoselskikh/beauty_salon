@@ -68,7 +68,7 @@ export function AddOrderForm() {
                                             if (event.target.checked) {
                                                 setData('services_ids', [...data.services_ids, e.id]);
                                             } else {
-                                                setData('services_ids', data.services_ids.filter(e => e !== e.id))
+                                                setData('services_ids', data.services_ids.filter(row => row !== e.id))
                                             }
                                         }}
                                         label={`${e.name} (${e.price} р.)`}/>

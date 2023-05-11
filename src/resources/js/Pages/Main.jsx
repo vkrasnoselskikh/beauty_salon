@@ -62,15 +62,15 @@ export default function Dashboard(props) {
                                     <Typography level="body2">{nearest_order.description}. </Typography>
                                 </Box>
 
+                                {!!nearest_order.services.length &&
+                                    <Box mt={2}>
+                                        <Typography level="body1">Предоставляемые услуги: </Typography>
 
-                                <Box mt={2}>
-                                    <Typography level="body1">Предоставляемые услуги: </Typography>
-                                    {nearest_order.services &&
                                         <List size={'sm'}>
                                             {nearest_order.services.map(e => <ListItem key={e.id}>{e.name}</ListItem>)}
                                         </List>
-                                    }
-                                </Box>
+                                    </Box>
+                                }
 
                                 <Box sx={{display: 'flex'}}>
                                     <div>
