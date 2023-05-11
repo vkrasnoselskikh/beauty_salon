@@ -26,10 +26,12 @@ class DashboardController extends Controller
             ->first();
 
         $services_ids = [];
-
-        foreach ($nearest_order->services as $s) {
-            $services_ids[] = $s->id;
+        if ($nearest_order) {
+            foreach ($nearest_order->services as $s) {
+                $services_ids[] = $s->id;
+            }
         }
+
 
         $nearest_order_services = MaterialToService::whereIn('service_id', $services_ids)->with('material')->get();
 
