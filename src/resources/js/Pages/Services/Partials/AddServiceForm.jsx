@@ -47,7 +47,8 @@ export default function () {
                 <FormControl error={!!errors.price}>
                     <FormLabel>Цена</FormLabel>
                     <Input
-                        name="name"
+                        name="price"
+                        type='number'
                         value={data.price}
                         onChange={handleOnChange}
                     />

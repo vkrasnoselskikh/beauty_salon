@@ -47,7 +47,7 @@ class User extends Authenticatable
     }
 
     public function services(){
-        return $this->hasMany(Service::class, 'user_id', 'id');
+        return $this->hasMany(Service::class, 'user_id', 'id')->with('materials');
     }
 
     public function materials(){

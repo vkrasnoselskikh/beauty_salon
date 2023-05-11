@@ -16,12 +16,14 @@ import ListMaterialsForm from "./ListMaterialsForm";
 
 
 export default function () {
-    const {service} = usePage().props
+    const {service, service_count_materials} = usePage().props
     const {data, setData, post, processing, errors, reset} = useForm({
         name: service.name,
         price: service.price,
         description: service.description,
+        materials: service.materials
     });
+    console.log(service)
 
     const handleOnChange = (event) => {
         setData(event.target.name, event.target.value);
@@ -29,8 +31,9 @@ export default function () {
 
     const submit = (e) => {
         e.preventDefault();
-        post(route('services.update'));
+        post(route('services.update', service.id));
     };
+
 
     return <>
         <form onSubmit={submit}>
@@ -48,7 +51,9 @@ export default function () {
                 <FormControl error={!!errors.price}>
                     <FormLabel>Цена</FormLabel>
                     <Input
-                        name="name"
+                        name="price"
+                        type='number'
+                        step=".01"
                         value={data.price}
                         onChange={handleOnChange}
                     />
@@ -61,7 +66,7 @@ export default function () {
                     <Textarea
                         minRows={4}
                         name="description"
-                        value={data.description}
+                        value={data.description || ""}
                         onChange={handleOnChange}
                     />
                     <FormHelperText>{errors.description}</FormHelperText>
@@ -69,15 +74,13 @@ export default function () {
 
                 <Box>
                     <Typography>Требуемые материалы:</Typography>
-
-
-
+                    <ListMaterialsForm value={service.materials} onChange={(m)=> setData('materials', m)}/>
                 </Box>
 
 
                 <Box display={'flex'} justifyContent={'end'}>
                     <Button type='submit' disabled={processing}>
-                        Сохранить услугу
+                        Сохранить
                     </Button>
                 </Box>
             </Stack>

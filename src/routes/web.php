@@ -3,7 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ClientsController;
-use App\Http\Controllers\ServicesController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\MaterialsController;
 
 
@@ -55,11 +55,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/clients/{client}', [ClientsController::class, 'delete'])->name('clients.delete');
 
 
-    Route::get('/services', [ServicesController::class, 'index'])->name('services.index');
-    Route::get('/services/add', [ServicesController::class, 'add_index'])->name('services.add');
-    Route::post('/services/add', [ServicesController::class, 'create'])->name('services.create');
-    Route::post('/services/{client}', [ServicesController::class, 'update'])->name('services.update');
-    Route::delete('/services/{client}', [ServicesController::class, 'delete'])->name('services.delete');
+    Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
+    Route::get('/services/add', [ServiceController::class, 'add_index'])->name('services.add');
+    Route::get('/services/{service}', [ServiceController::class, 'edit_index'])->name('services.edit');
+    Route::post('/services/add', [ServiceController::class, 'create'])->name('services.create');
+    Route::post('/services/{service}', [ServiceController::class, 'update'])->name('services.update');
+    Route::delete('/services/{service}', [ServiceController::class, 'delete'])->name('services.delete');
 
     Route::get('/materials', [MaterialsController::class, 'index'])->name('materials.index');
 });

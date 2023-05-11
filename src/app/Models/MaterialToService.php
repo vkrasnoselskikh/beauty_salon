@@ -18,4 +18,8 @@ class MaterialToService extends Model
     ];
 
     public $timestamps = false;
+
+    public function material(){
+        return $this->hasOne(Material::class, 'id', 'material_id');
+    }
 }
