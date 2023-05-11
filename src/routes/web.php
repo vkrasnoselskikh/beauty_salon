@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\MaterialsController;
+use App\Http\Controllers\MaterialController;
 
 
 use Illuminate\Foundation\Application;
@@ -62,7 +62,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/services/{service}', [ServiceController::class, 'update'])->name('services.update');
     Route::delete('/services/{service}', [ServiceController::class, 'delete'])->name('services.delete');
 
-    Route::get('/materials', [MaterialsController::class, 'index'])->name('materials.index');
+    Route::get('/materials', [MaterialController::class, 'index'])->name('materials.index');
+    Route::get('/materials/add', [MaterialController::class, 'add_index'])->name('materials.add');
+    Route::post('/materials/add', [MaterialController::class, 'create'])->name('materials.create');
+    Route::post('/materials/{material}', [MaterialController::class, 'update'])->name('materials.update');
+    Route::delete('/materials/{material}', [MaterialController::class, 'delete'])->name('materials.delete');
 });
 
 

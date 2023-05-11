@@ -22,7 +22,7 @@ class ClientsController extends Controller
         return Inertia::render('Clients/AddClient');
     }
 
-    public function create(Request $request):RedirectResponse 
+    public function create(Request $request):RedirectResponse
     {
         $validatedData = $request->validate([
             'first_name' => 'required|string|max:255',
@@ -30,7 +30,7 @@ class ClientsController extends Controller
             'phone' => 'required|string|max:255',
             'email' => 'required|string|max:255'
         ]);
-        
+
         $client = new Client();
 
         $client->user_id = $request->user()->id;
@@ -49,7 +49,21 @@ class ClientsController extends Controller
         if ($request->user()->cannot('update', $client)) {
             abort(403);
         }
-        
+
+        $validatedData = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'phone' => 'required|string|max:255',
+            'email' => 'required|string|max:255'
+        ]);
+
+        $client->first_name = $validatedData['first_name'];
+        $client->last_name = $validatedData['last_name'];
+        $client->phone = $validatedData['phone'];
+        $client->email = $validatedData['email'];
+
+        $client->save();
+
         return to_route('clients.index');
     }
 
