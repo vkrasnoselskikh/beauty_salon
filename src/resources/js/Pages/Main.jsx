@@ -91,7 +91,7 @@ export default function Dashboard(props) {
                                             bgcolor: 'background.body',
                                         }}>
                                             {nearest_order_services.map((e, index) => {
-                                                const is_have_in_stock = e.quantity < e.material.quantity
+                                                const is_have_in_stock = e.quantity <= e.material.quantity
 
                                                 return <ListItem
                                                     endAction={!is_have_in_stock ?
