@@ -1,7 +1,8 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import {Head, router, usePage} from '@inertiajs/react';
-import {Box, Button, Card, Grid, List, ListItem, Typography} from '@mui/joy';
+import {Box, Button, Card, Chip, Grid, List, ListItem, Typography} from '@mui/joy';
 import * as PropTypes from "prop-types";
+import ListItemDecorator from "@mui/joy/ListItemDecorator";
 
 function CardHeader(props) {
     return null;
@@ -15,9 +16,9 @@ CardHeader.propTypes = {
 };
 export default function Dashboard(props) {
 
-    const {nearest_order} = usePage().props
+    const {nearest_order, nearest_order_services} = usePage().props
     const total_price = nearest_order?.services?.map(e => e.price).reduce((a, b) => a + b, 0)
-    console.log(nearest_order)
+    console.log(nearest_order_services)
 
     const cancelOrderHandle = () => {
         router.visit(route('orders.set_status', [nearest_order.id, 2]), {
@@ -43,7 +44,9 @@ export default function Dashboard(props) {
         >
             <Head title="Главная"/>
 
-            {!nearest_order && <Typography level={'body2'}>Ближайших заказов нет. Пора поработать! Создайте заказы в разделе "Заказы"</Typography>}
+            {!nearest_order &&
+                <Typography level={'body2'}>Ближайших заказов нет. Пора поработать! Создайте заказы в разделе
+                    "Заказы"</Typography>}
 
             {!!nearest_order &&
                 <Box>
@@ -66,13 +69,46 @@ export default function Dashboard(props) {
                                     <Box mt={2}>
                                         <Typography level="body1">Предоставляемые услуги: </Typography>
 
-                                        <List size={'sm'}>
+                                        <List size={'sm'} variant="outlined" sx={{
+                                            borderRadius: 'sm',
+                                            maxWidth: 300,
+                                            boxShadow: 'sm',
+                                            bgcolor: 'background.body',
+                                        }}>
                                             {nearest_order.services.map(e => <ListItem key={e.id}>{e.name}</ListItem>)}
                                         </List>
                                     </Box>
                                 }
 
-                                <Box sx={{display: 'flex'}}>
+                                {!!nearest_order_services.length &&
+                                    <Box mt={2}>
+                                        <Typography level="body1">Потребуются материалы: </Typography>
+
+                                        <List size={'sm'} variant="outlined" sx={{
+                                            borderRadius: 'sm',
+                                            maxWidth: 300,
+                                            boxShadow: 'sm',
+                                            bgcolor: 'background.body',
+                                        }}>
+                                            {nearest_order_services.map((e, index) => {
+                                                const is_have_in_stock = e.quantity < e.material.quantity
+
+                                                return <ListItem
+                                                    endAction={!is_have_in_stock ?
+                                                        <ListItemDecorator>
+                                                            <Chip size={'sm'}
+                                                                  color={'danger'}>Требуется купить!!!</Chip>
+                                                        </ListItemDecorator> : <Chip size={'sm'}
+                                                                                     color={'success'}>✓</Chip>}
+                                                    key={index}>{e.material.name} - {e.quantity} {e.material.unit_of_measure}.
+
+                                                </ListItem>
+                                            })}
+                                        </List>
+                                    </Box>
+                                }
+
+                                <Box sx={{display: 'flex'}} mt={2}>
                                     <div>
                                         <Typography level="body3">Итоговая цена:</Typography>
                                         <Typography fontSize="lg" fontWeight="lg">
@@ -85,7 +121,6 @@ export default function Dashboard(props) {
                                             onClick={cancelOrderHandle}
                                             size="sm"
                                             color="danger"
-                                            aria-label="Explore Bahamas Islands"
                                             sx={{ml: 'auto', fontWeight: 600}}
                                         >
                                             Отменить
@@ -95,7 +130,6 @@ export default function Dashboard(props) {
                                             variant="solid"
                                             size="sm"
                                             color="success"
-                                            aria-label="Explore Bahamas Islands"
                                             sx={{ml: 'auto', fontWeight: 600}}
                                         >Завершить</Button>
                                     </Box>

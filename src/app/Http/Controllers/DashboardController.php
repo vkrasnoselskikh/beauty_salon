@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MaterialToService;
 use App\Models\Order;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -24,6 +25,17 @@ class DashboardController extends Controller
             ->with('services')
             ->first();
 
-        return Inertia::render('Main', ['nearest_order' => $nearest_order]);
+        $services_ids = [];
+
+        foreach ($nearest_order->services as $s) {
+            $services_ids[] = $s->id;
+        }
+
+        $nearest_order_services = MaterialToService::whereIn('service_id', $services_ids)->with('material')->get();
+
+        return Inertia::render('Main', [
+            'nearest_order' => $nearest_order,
+            'nearest_order_services' => $nearest_order_services
+        ]);
     }
 }
