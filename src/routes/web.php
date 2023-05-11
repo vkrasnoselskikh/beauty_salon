@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ClientsController;
@@ -31,9 +32,7 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/main', function () {
-    return Inertia::render('Main');
-})->middleware(['auth', 'verified'])->name('main');
+Route::get('/main', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('main');
 
 Route::middleware('auth')->group(function () {
 
@@ -46,6 +45,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/orders/add', [OrderController::class, 'create'])->name('orders.create');
     Route::post('/orders/{order}', [OrderController::class, 'update'])->name('orders.update');
     Route::delete('/orders/{order}', [OrderController::class, 'delete'])->name('orders.delete');
+    Route::post('/orders/{order}/status/{status}', [OrderController::class, 'set_status'])->name('orders.set_status');
 
 
     Route::get('/clients', [ClientsController::class, 'index'])->name('clients.index');

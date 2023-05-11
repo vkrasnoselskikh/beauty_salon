@@ -84,10 +84,20 @@ class OrderController extends Controller
         $order->order_date = Carbon::parse($validatedData['order_date']);
         $order->description = $validatedData['description'];
 
-        $order-> save();
+        $order->save();
+        return to_route('orders.index', status: 303);
+    }
 
+    public function set_status(Request $request, Order $order, OrderStatus $status): RedirectResponse
+    {
 
-        return to_route('orders.index',status: 303);
+        if ($request->user()->cannot('update', $order)) {
+            abort(403);
+        }
+
+        $order->status_id = $status->id;
+        $order->save();
+        return to_route('main', status: 303);
     }
 
     public function delete(Request $request, Order $order): RedirectResponse
